@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<title>武術 · Ушу</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;700&family=IBM+Plex+Mono:wght@500&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0c0c0e;--surface:#131316;--border:rgba(255,255,255,0.07);
+  --accent:#b0f040;--warn:#f0b040;--err:#f05050;--ok:#40d090;
+  --text:#eeeee6;--muted:#666662;--dim:#2a2a28;
+  --serif:'Noto Serif SC',serif;--mono:'IBM Plex Mono',monospace;--sans:'Manrope',sans-serif;
+}
+html,body{height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--sans)}
+
+body{display:grid;grid-template-rows:54px 1fr 36px;grid-template-columns:1fr 310px;
+     grid-template-areas:"hd hd" "mn sb" "ft ft";height:100vh}
+
+/* HEADER */
+header{grid-area:hd;display:flex;align-items:center;gap:14px;padding:0 24px;
+       border-bottom:1px solid var(--border);background:var(--surface)}
+.logo-zh{font-family:var(--serif);font-size:1.8rem;color:var(--accent);line-height:1}
+.logo-name{font-size:.85rem;font-weight:600;letter-spacing:.04em}
+.logo-sub{font-size:.65rem;color:var(--muted);font-weight:300}
+.pill{margin-left:auto;display:flex;align-items:center;gap:7px;
+      font-size:.68rem;font-family:var(--mono);color:var(--muted);
+      padding:4px 14px;border:1px solid var(--border);border-radius:100px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--dim);transition:background .4s,box-shadow .4s}
+.dot.live{background:var(--accent);box-shadow:0 0 8px var(--accent)}
+.dot.lost{background:var(--err)}
+
+/* MAIN */
+.main{grid-area:mn;padding:40px 44px;display:flex;flex-direction:column;
+      justify-content:center;border-right:1px solid var(--border);
+      position:relative;overflow:hidden}
+
+/* великий символ на тлi */
+.main::before{content:attr(data-zh);position:absolute;right:-10px;top:50%;
+  transform:translateY(-50%);font-family:var(--serif);
+  font-size:min(42vw,430px);font-weight:700;
+  color:rgba(255,255,255,.02);user-select:none;pointer-events:none;line-height:1}
+
+.section-lbl{font-size:.6rem;font-family:var(--mono);letter-spacing:.18em;
+             color:var(--muted);text-transform:uppercase;margin-bottom:8px}
+
+#stance-name{font-size:clamp(2.2rem,5vw,4.5rem);font-weight:700;
+             line-height:1.1;letter-spacing:-.02em;color:var(--text);transition:color .3s}
+#stance-name.idle{color:var(--dim);font-size:1.6rem;font-weight:300}
+
+.sub-row{display:flex;align-items:baseline;gap:12px;margin-top:6px;min-height:2.2rem}
+#stance-zh{font-family:var(--serif);font-size:1.8rem;color:var(--muted)}
+#stance-sub{font-size:.78rem;color:var(--muted);font-style:italic}
+#rule-badge{font-size:.62rem;font-family:var(--mono);color:var(--muted);
+            padding:2px 9px;border:1px solid var(--border);border-radius:4px}
+
+/* confidence */
+.conf-row{display:flex;align-items:center;gap:10px;margin-top:26px;max-width:380px}
+.conf-lbl{font-size:.64rem;font-family:var(--mono);color:var(--muted);min-width:74px}
+.conf-track{flex:1;height:3px;background:rgba(255,255,255,.05);border-radius:2px;overflow:hidden}
+.conf-bar{height:100%;border-radius:2px;background:var(--accent);opacity:.8;width:0;transition:width .4s}
+.conf-pct{font-family:var(--mono);font-size:.68rem;color:var(--muted);min-width:38px;text-align:right}
+
+.idle-msg{margin-top:16px;font-size:.8rem;color:var(--dim);font-weight:300}
+
+/* SIDEBAR */
+.sidebar{grid-area:sb;display:flex;flex-direction:column;overflow:hidden;background:var(--surface)}
+.sb-head{padding:16px 16px 12px;font-size:.6rem;font-family:var(--mono);
+         letter-spacing:.16em;text-transform:uppercase;color:var(--muted);
+         border-bottom:1px solid var(--border);flex-shrink:0}
+.hints-list{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:8px}
+
+/* hint card */
+.hint{display:flex;gap:9px;align-items:flex-start;padding:10px 12px;
+      border-radius:7px;border:1px solid transparent;animation:fi .25s ease}
+@keyframes fi{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:none}}
+.hint.error  {background:rgba(240,80,80,.09);border-color:rgba(240,80,80,.22)}
+.hint.warning{background:rgba(240,176,64,.09);border-color:rgba(240,176,64,.22)}
+.hint.ok     {background:rgba(64,208,144,.08);border-color:rgba(64,208,144,.2)}
+.hico{flex-shrink:0;width:18px;height:18px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.62rem;font-weight:700;margin-top:1px}
+.hint.error   .hico{background:rgba(240,80,80,.25);color:#ff9090}
+.hint.warning .hico{background:rgba(240,176,64,.25);color:#ffcc70}
+.hint.ok      .hico{background:rgba(64,208,144,.25);color:#60e8a8}
+.htxt{font-size:.8rem;line-height:1.45}
+.hint.error   .htxt{color:#ffc8c8}
+.hint.warning .htxt{color:#ffe5b0}
+.hint.ok      .htxt{color:#a0f0d0}
+.empty{text-align:center;color:var(--muted);font-size:.8rem;padding:28px 0}
+
+/* angles */
+.ang-block{border-top:1px solid var(--border);padding:12px;flex-shrink:0}
+.ang-title{font-size:.58rem;font-family:var(--mono);letter-spacing:.14em;
+           text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.ang-row{display:flex;align-items:center;gap:8px;padding:2.5px 0}
+.ang-name{font-size:.68rem;color:var(--muted);min-width:90px}
+.ang-track{flex:1;height:2px;background:rgba(255,255,255,.05);border-radius:1px;overflow:hidden}
+.ang-fill{height:100%;border-radius:1px;background:var(--accent);opacity:.38;transition:width .3s}
+.ang-val{font-family:var(--mono);font-size:.66rem;color:var(--muted);min-width:46px;text-align:right}
+
+/* FOOTER */
+footer{grid-area:ft;border-top:1px solid var(--border);background:var(--surface);
+       display:flex;align-items:center;gap:20px;padding:0 24px}
+.fi{font-size:.62rem;font-family:var(--mono);color:var(--muted)}
+.fi b{color:var(--text);font-weight:500}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-zh">武</div>
+  <div>
+    <div class="logo-name">Ушу · Аналіз стійок</div>
+    <div class="logo-sub">Real-time pose feedback</div>
+  </div>
+  <div class="pill">
+    <div class="dot" id="dot"></div>
+    <span id="ws-status">підключення…</span>
+  </div>
+</header>
+
+<div class="main" id="main" data-zh="武">
+  <div class="section-lbl">Розпізнана стійка</div>
+
+  <div id="stance-name" class="idle">Стань перед камерою</div>
+
+  <div class="sub-row">
+    <span id="stance-zh"></span>
+    <span id="stance-sub"></span>
+    <span id="rule-badge"></span>
+  </div>
+
+  <div class="conf-row">
+    <span class="conf-lbl">Впевненість</span>
+    <div class="conf-track"><div class="conf-bar" id="conf-bar"></div></div>
+    <span class="conf-pct" id="conf-pct">0%</span>
+  </div>
+
+  <div class="idle-msg" id="idle-msg">Запусти 06_realtime_clean.py та стань у стійку</div>
+</div>
+
+<div class="sidebar">
+  <div class="sb-head">Підказки до виправлення</div>
+  <div class="hints-list" id="hints-list">
+    <div class="empty">Очікування стійки…</div>
+  </div>
+  <div class="ang-block" id="ang-block" style="display:none">
+    <div class="ang-title">Кути суглобів</div>
+    <div id="ang-rows"></div>
+  </div>
+</div>
+
+<footer>
+  <div class="fi">FPS <b id="fps">—</b></div>
+  <div class="fi">ws://localhost:<b>8765</b></div>
+  <div class="fi">http://localhost:<b>8080</b></div>
+</footer>
+
+<script>
+let fpsCount = 0, fpsTimer = Date.now();
+
+/* ── встановити idle стан ── */
+function setIdle() {
+  document.getElementById('stance-name').textContent = 'Стань перед камерою';
+  document.getElementById('stance-name').className = 'idle';
+  document.getElementById('stance-zh').textContent  = '';
+  document.getElementById('stance-sub').textContent = '';
+  document.getElementById('rule-badge').textContent = '';
+  document.getElementById('main').setAttribute('data-zh','武');
+  document.getElementById('idle-msg').style.display = '';
+  document.getElementById('conf-bar').style.width = '0%';
+  document.getElementById('conf-pct').textContent = '0%';
+  document.getElementById('hints-list').innerHTML = '<div class="empty">Очікування стійки…</div>';
+  document.getElementById('ang-block').style.display = 'none';
+}
+
+/* ── оновити стан зі стійкою ── */
+function setStance(d) {
+  /* назва */
+  document.getElementById('stance-name').textContent = d.name_ua || d.stance_key || '—';
+  document.getElementById('stance-name').className   = '';
+
+  /* підзаголовок */
+  document.getElementById('stance-zh').textContent  = d.name_zh  || '';
+  document.getElementById('stance-sub').textContent = d.subtitle || '';
+  document.getElementById('rule-badge').textContent = d.rule_id ? 'п. ' + d.rule_id : '';
+
+  /* символ на тлі */
+  const zh = (d.name_zh || '武').charAt(0);
+  document.getElementById('main').setAttribute('data-zh', zh);
+  document.getElementById('idle-msg').style.display = 'none';
+
+  /* впевненість */
+  const pct = Math.min(100, d.confidence || 0);
+  document.getElementById('conf-bar').style.width = pct + '%';
+  document.getElementById('conf-pct').textContent  = pct + '%';
+
+  /* підказки */
+  const hints = d.hints || [];
+  const el = document.getElementById('hints-list');
+  if (hints.length === 0) {
+    el.innerHTML = '<div class="hint ok"><div class="hico">✓</div><div class="htxt">Стійка виконана правильно!</div></div>';
+  } else {
+    el.innerHTML = hints.map(h => {
+      const cls  = h.severity === 'error' ? 'error' : 'warning';
+      const icon = h.severity === 'error' ? '!' : '△';
+      return `<div class="hint ${cls}"><div class="hico">${icon}</div><div class="htxt">${h.text}</div></div>`;
+    }).join('');
+  }
+
+  /* кути */
+  const angles = d.angles || {};
+  const names  = Object.keys(angles);
+  if (names.length > 0) {
+    document.getElementById('ang-block').style.display = '';
+    document.getElementById('ang-rows').innerHTML = names.map(k => {
+      const v   = angles[k];
+      const pct = Math.min(100, v / 180 * 100).toFixed(1);
+      return `<div class="ang-row">
+        <span class="ang-name">${k}</span>
+        <div class="ang-track"><div class="ang-fill" style="width:${pct}%"></div></div>
+        <span class="ang-val">${v.toFixed ? v.toFixed(1) : v}°</span>
+      </div>`;
+    }).join('');
+  }
+}
+
+/* ── WebSocket ── */
+function connect() {
+  const dot = document.getElementById('dot');
+  const lbl = document.getElementById('ws-status');
+  let ws;
+
+  try { ws = new WebSocket('ws://localhost:8765'); }
+  catch(e) {
+    dot.className = 'dot lost';
+    lbl.textContent = 'помилка';
+    setTimeout(connect, 3000);
+    return;
+  }
+
+  ws.onopen = () => {
+    dot.className = 'dot live';
+    lbl.textContent = 'підключено';
+    console.log('WS підключено');
+  };
+
+  ws.onmessage = ev => {
+    /* FPS */
+    fpsCount++;
+    const now = Date.now();
+    if (now - fpsTimer >= 1000) {
+      document.getElementById('fps').textContent = fpsCount;
+      fpsCount = 0; fpsTimer = now;
+    }
+
+    let d;
+    try { d = JSON.parse(ev.data); }
+    catch(e) { console.error('JSON parse error', e); return; }
+
+    console.log('recv:', JSON.stringify(d).slice(0,120));  /* debug */
+
+    if (d.detected) setStance(d);
+    else            setIdle();
+  };
+
+  ws.onclose = () => {
+    dot.className = 'dot lost';
+    lbl.textContent = "з'єднання втрачено";
+    setIdle();
+    setTimeout(connect, 2500);
+  };
+
+  ws.onerror = err => {
+    console.error('WS error', err);
+    ws.close();
+  };
+}
+
+setIdle();
+connect();
+</script>
+</body>
+</html>
