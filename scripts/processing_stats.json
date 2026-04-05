@@ -1,0 +1,37 @@
+{
+  "total": 0,
+  "successful": 0,
+  "failed": 0,
+  "by_category": {
+    "gongbu_bad": {
+      "total": 0,
+      "successful": 0,
+      "failed": 0
+    },
+    "gongbu_good": {
+      "total": 0,
+      "successful": 0,
+      "failed": 0
+    },
+    "mabu_bad": {
+      "total": 0,
+      "successful": 0,
+      "failed": 0
+    },
+    "mabu_good": {
+      "total": 0,
+      "successful": 0,
+      "failed": 0
+    },
+    "pubu_bad": {
+      "total": 0,
+      "successful": 0,
+      "failed": 0
+    },
+    "pubu_good": {
+      "total": 0,
+      "successful": 0,
+      "failed": 0
+    }
+  }
+}

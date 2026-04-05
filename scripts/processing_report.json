@@ -1,0 +1,57 @@
+{
+  "total_images": 407,
+  "successful": 406,
+  "failed": 1,
+  "categories": {
+    "gongbu_bad": {
+      "total": 53,
+      "successful": 53,
+      "failed": 0
+    },
+    "gongbu_good": {
+      "total": 68,
+      "successful": 68,
+      "failed": 0
+    },
+    "mabu_bad": {
+      "total": 37,
+      "successful": 37,
+      "failed": 0
+    },
+    "mabu_good": {
+      "total": 24,
+      "successful": 24,
+      "failed": 0
+    },
+    "pubu_bad": {
+      "total": 17,
+      "successful": 17,
+      "failed": 0
+    },
+    "pubu_good": {
+      "total": 47,
+      "successful": 47,
+      "failed": 0
+    },
+    "suibu_bad": {
+      "total": 16,
+      "successful": 16,
+      "failed": 0
+    },
+    "suibu_good": {
+      "total": 74,
+      "successful": 74,
+      "failed": 0
+    },
+    "tisi_bad": {
+      "total": 33,
+      "successful": 33,
+      "failed": 0
+    },
+    "tisi_good": {
+      "total": 38,
+      "successful": 37,
+      "failed": 1
+    }
+  }
+}
