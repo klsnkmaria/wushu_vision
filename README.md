@@ -80,11 +80,11 @@ WebSocket → браузер → підказки для виправлення
 ```
 
 **Технічний стек:**
-- **MediaPipe Pose** — визначення 33 точок тіла
-- **Random Forest** (scikit-learn) — класифікація стійки
-- **OpenCV** — захоплення відео, відображення скелета
-- **WebSocket** (websockets) — передача даних у браузер
-- **HTTP**  —  веб-сторінка
+- **MediaPipe Pose** - визначення 33 точок тіла
+- **Random Forest** (scikit-learn) - класифікація стійки
+- **OpenCV** - захоплення відео, відображення скелета
+- **WebSocket**  - передача даних у браузер
+- **HTTP**  -  веб-сторінка
 
 ---
 
@@ -93,8 +93,8 @@ WebSocket → браузер → підказки для виправлення
 ### 1. Клонування репозиторію
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/wushu-stance-analyzer.git
-cd wushu-stance-analyzer
+git clone https://github.com/klsnkmaria/wushu_vision.git
+cd wushu_vision
 ```
 
 ### 2. Створення віртуального середовища
@@ -126,21 +126,21 @@ python scripts/06_realtime_clean.py
 ### 5. Навчання моделі з нуля
 
 ```bash
-# Крок 1: Підготуй фото у папці raw_images/{stance_good|bad}/
+# Крок 1: Підготувати фото у папці raw_images/{stance_good|bad}/
 
-# Крок 2: Витягни keypoints
+# Крок 2: Витягнути keypoints
 python scripts/01_extract_keypoints.py
 
-# Крок 3: Перевір якість
+# Крок 3: Перевірити якість
 python scripts/02_check_data.py
 
-# Крок 4: Побудуй датасет
+# Крок 4: Побудувати датасет
 python scripts/03_build_dataset.py
 
-# Крок 5: Перевір датасет
+# Крок 5: Перевірити датасет
 python scripts/04_inspect_dataset.py
 
-# Крок 6: Навчи модель
+# Крок 6: Навчити модель
 python scripts/05_train_model.py
 
 # Крок 7: Запуск
