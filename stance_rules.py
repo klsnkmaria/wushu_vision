@@ -1,10 +1,5 @@
-# stance_rules.py
-# Офiцiйнi помилки стiйок згiдно з правилами змагань з ушу
-# Ключi стiйок: 'gongbu', 'mabu', 'pubu', 'suibu', 'tisi'
-
 import numpy as np
 
-# Iндекси MediaPipe Pose
 IDX = {
     'NOSE': 0,
     'LEFT_SHOULDER': 11,  'RIGHT_SHOULDER': 12,
@@ -17,8 +12,6 @@ IDX = {
     'LEFT_FOOT_INDEX': 31,'RIGHT_FOOT_INDEX': 32,
 }
 
-
-# ─── Допомiжнi функцiї ───────────────────────────────────────────────────────
 
 def _angle(a, b, c):
     """Кут у точцi b (градуси)."""
@@ -159,7 +152,7 @@ def _mabu_torso_tilt(kp):
     return bool(_back_tilt_deg(kp) >= 38)
 
 
-# SUIBU (虛步) ────────────────────────────────────────────────────────────────
+# SUIBU ────────────────────────────────────────────────────────────────
 
 def _suibu_support_thigh(kp):
     _, back = _front_back(kp)
@@ -211,10 +204,6 @@ def _tisi_toe_direction(kp):
     toe_inward = (toe[0] > heel[0] - 0.01) if side == 'LEFT' else (toe[0] < heel[0] + 0.01)
     return not (toe_lower and toe_inward)
 
-
-# ─── Словник стiйок ──────────────────────────────────────────────────────────
-# Ключi ТОЧНО вiдповiдають reverse_label_map моделi:
-# {0: 'gongbu', 1: 'mabu', 2: 'pubu', 3: 'suibu', 4: 'tisi'}
 
 STANCE_RULES = {
     'gongbu': {
