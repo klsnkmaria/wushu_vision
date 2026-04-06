@@ -117,5 +117,3 @@ def load_and_inspect_dataset(dataset_path='processed_data/dataset.pkl'):
 
 if __name__ == "__main__":
     dataset = load_and_inspect_dataset('../processed_data/dataset.pkl')
-
-    print("\nДля тренування моделі запустіть наступний скрипт")
