@@ -24,7 +24,7 @@ class StanceClassifier:
             min_samples_split=5,
             min_samples_leaf=2,
             random_state=random_state,
-            n_jobs=-1  # Використання всіх ядер процесора
+            n_jobs=-1 
         )
         self.label_map = None
         self.feature_names = None
