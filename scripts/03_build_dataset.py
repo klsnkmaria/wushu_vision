@@ -7,7 +7,6 @@ class KeypointNormalizer:
     """Нормалізація ключових точок відносно тазу та довжини торсу"""
 
     def __init__(self):
-        # Індекси ключових точок MediaPipe
         self.LEFT_HIP = 23
         self.RIGHT_HIP = 24
         self.LEFT_SHOULDER = 11
