@@ -28,7 +28,7 @@ class DataQualityChecker:
             print(f"  Кількість файлів: {len(npy_files)}")
 
             if len(npy_files) == 0:
-                print(f"  УВАГА: Порожня папка!\n")
+                print(f"Порожня папка\n")
                 continue
 
             # Аналіз структури даних
@@ -53,7 +53,7 @@ class DataQualityChecker:
             # Перевірка консистентності розмірів
             unique_shapes = set(shapes)
             if len(unique_shapes) > 1:
-                print(f"  УВАГА: Знайдено різні розміри: {unique_shapes}")
+                print(f" Знайдено різні розміри: {unique_shapes}")
                 problematic_files.append(category_name)
             else:
                 print(f"  Розмір даних: {shapes[0]}")
@@ -70,7 +70,7 @@ class DataQualityChecker:
                 print(f"    Максимальна: {max_visibility:.2%}")
 
                 if avg_visibility < 0.5:
-                    print(f"  УВАГА: Низька середня видимість!")
+                    print(f" Низька середня видимість!")
 
                 if low_visibility_files:
                     print(f"  Файли з низькою видимістю ({len(low_visibility_files)}):")
@@ -112,13 +112,13 @@ class DataQualityChecker:
             category_path = self.data_dir / category
 
             if not category_path.exists():
-                print(f"  Категорія {category} не знайдена, пропускаємо")
+                print(f"  Категорія {category} не знайдена")
                 continue
 
             npy_files = list(category_path.glob('*.npy'))[:n_samples]
 
             if len(npy_files) == 0:
-                print(f"  Категорія {category} порожня, пропускаємо")
+                print(f"  Категорія {category} порожня")
                 continue
 
             fig, axes = plt.subplots(1, len(npy_files), figsize=(15, 3))
@@ -177,18 +177,13 @@ class DataQualityChecker:
 
 
 if __name__ == "__main__":
-    print("Запуск перевірки якості даних\n")
+    print("Перевірка якості даних\n")
 
     checker = DataQualityChecker(data_dir='../processed_data')
 
-    # Перевірка всіх даних
     stats = checker.check_all()
 
-    # Перевірка діапазонів
     checker.check_keypoint_ranges()
 
-    # Створення візуалізацій для всіх категорій
-    print("\n" + "=" * 50)
     checker.visualize_samples()
 
-    print("\nПеревірка завершена")
